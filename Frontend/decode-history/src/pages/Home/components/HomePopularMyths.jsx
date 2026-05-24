@@ -1,8 +1,6 @@
 import React, { useRef } from 'react';
-// Імпортуємо нашу нову спільну базу даних з 10 міфів
 import { mockMyths } from '../../../data/myths'; 
 
-// Ось цей самий хелпер, який перетворює текстову назву іконки на реальний SVG
 const getMythIcon = (iconName) => {
   const baseClass = "w-16 h-16 stroke-[1.2]";
   
@@ -68,66 +66,68 @@ const HomePopularMyths = () => {
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -320 : 320;
-      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      const card = scrollContainerRef.current.firstElementChild;
+      const scrollAmount = card ? card.offsetWidth + 24 : 304;
+      scrollContainerRef.current.scrollBy({ 
+        left: direction === 'left' ? -scrollAmount : scrollAmount, 
+        behavior: 'smooth' 
+      });
     }
   };
 
   return (
-    <section className="max-w-6xl mx-auto px-4 my-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-brand-dark mb-8 text-center md:text-left">
+    <section className="max-w-[1360px] mx-auto px-4 md:px-12 lg:px-16 my-16">
+      <h2 className="text-2xl md:text-3xl font-bold text-brand-dark mb-8 text-center lg:text-left">
         Популярні міфи
       </h2>
 
       <div className="relative group">
+        
         <button 
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 z-10 bg-white border border-brand-dark/15 shadow-lg text-brand-dark hover:text-brand-blue rounded-full p-2.5 transition-all hidden md:block cursor-pointer"
+          className="absolute -left-2 md:-left-12 lg:-left-14 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white border border-brand-dark/10 shadow-md text-brand-dark hover:text-brand-blue rounded-full flex items-center justify-center transition-all hidden md:flex cursor-pointer"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg className="w-6 h-6 pr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
+        {/* ПРИБРАНО: snap-x, snap-mandatory */}
         <div 
           ref={scrollContainerRef}
-          className="flex gap-6 overflow-x-auto snap-x snap-mandatory py-4 px-2 -mx-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth"
+          className="flex gap-6 overflow-x-auto py-4 items-stretch [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth w-full"
         >
-          {/* Проходимося по масиву mockMyths, імпортованому з файлу */}
           {mockMyths.map((myth) => (
             <div 
               key={myth.id} 
-              className="min-w-[260px] md:min-w-[280px] snap-start bg-white border border-brand-dark/15 rounded-2xl p-6 flex flex-col items-center justify-between hover:shadow-md transition-shadow cursor-pointer"
+              className="shrink-0 bg-white border border-brand-dark/15 rounded-2xl p-6 flex flex-col items-center justify-between hover:shadow-md transition-shadow cursor-pointer h-auto w-[260px] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]"
             >
-              
-              {/* Тут ми викликаємо хелпер і передаємо йому текстове поле iconName */}
-              <div className="text-brand-blue mb-6">
+              <div className="text-brand-blue mb-6 mt-2 shrink-0">
                 {getMythIcon(myth.iconName)}
               </div>
 
-              <h3 className="text-lg font-bold text-brand-dark text-center mb-8 h-12 flex items-center justify-center">
-                {myth.title}
+              <h3 className="text-lg font-bold text-brand-dark text-center mb-8 h-14 flex items-center justify-center w-full">
+                <span className="line-clamp-2">{myth.title}</span>
               </h3>
 
-              <div className="w-full flex items-center justify-between mt-auto">
+              <div className="w-full flex items-center justify-between mt-auto pt-4 border-t border-brand-dark/5">
                 <span className="text-xs font-bold text-brand-blue bg-brand-light border border-brand-blue/10 px-3 py-1 rounded-md">
                   {myth.category}
                 </span>
-                <span className="text-xs text-brand-dark/50 font-medium">
+                <span className="text-xs text-brand-dark/50 font-medium whitespace-nowrap">
                   {myth.readTime}
                 </span>
               </div>
-
             </div>
           ))}
         </div>
 
         <button 
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 z-10 bg-white border border-brand-dark/15 shadow-lg text-brand-dark hover:text-brand-blue rounded-full p-2.5 transition-all hidden md:block cursor-pointer"
+          className="absolute -right-2 md:-right-12 lg:-right-14 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white border border-brand-dark/10 shadow-md text-brand-dark hover:text-brand-blue rounded-full flex items-center justify-center transition-all hidden md:flex cursor-pointer"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg className="w-6 h-6 pl-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
           </svg>
         </button>
 
