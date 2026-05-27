@@ -22,12 +22,12 @@ jobs:
       # ==========================================
       - name: 📦 Встановлення пакетів (Frontend)
         run: |
-          cd Front-end
+          cd decode-history/Front-end
           npm install
 
       - name: 🏗 Збірка (Build) Frontend
         run: |
-          cd Front-end
+          cd decode-history/Front-end
           npm run build
 
       - name: 🚀 Деплой Фронтенду на хостинг
