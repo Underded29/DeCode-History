@@ -2,14 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const db = require('./src/db'); 
+const path = require('path');
 
 // Імпортуємо наш новий роутер авторизації
 const authRoutes = require('./src/routes/auth'); 
 
 const app = express();
 
+const userRoutes = require('./src/routes/user');
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Базовий тестовий маршрут
 app.get('/', (req, res) => {
@@ -36,6 +39,7 @@ app.get('/api/test-db', async (req, res) => {
 // ПІДКЛЮЧАЄМО РОУТИ АВТОРИЗАЦІЇ
 // Всі запити, які починаються з /api/auth, будуть йти у файл auth.js
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes); // Підключаємо роутер користувачів
 
 const PORT = process.env.PORT || 5001;
 

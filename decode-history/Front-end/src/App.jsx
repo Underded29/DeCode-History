@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+import GlobalLoader from './components/GlobalLoader'; 
 
 // Сторінки
 import Home from './pages/Home/Home';
@@ -23,6 +24,8 @@ function App() {
   return (
     // Головний контейнер на всю висоту екрана
     <div className="min-h-screen flex flex-col bg-brand-light font-sans text-brand-dark overflow-x-hidden">
+
+      <GlobalLoader />
       
       {/* Фіксований хедер */}
       <Header onOpenMenu={() => setIsMenuOpen(true)} />

@@ -1,29 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMythsData } from '../../MythContext/MythContext'; // Імпортуємо наш контекст (перевір шлях!)
+import { useMythsData } from '../../MythContext/MythContext'; 
+import { completeMythService } from '../../../services/userService'; // Імпортуємо наш новий сервіс
 
-const MythQuiz = ({ quizzes, currentId }) => {
+const MythQuiz = ({ quizzes, currentId, mythXp, onQuizComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const navigate = useNavigate();
   
-  // Дістаємо всі міфи з контексту
+  // Нові стейти для ігрової механіки
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [serverMessage, setServerMessage] = useState(null); // Повідомлення від бекенду
+  
+  const navigate = useNavigate();
   const { myths } = useMythsData();
-
-  // Знаходимо порядковий номер (індекс) поточного міфу в масиві
   const currentIndex = myths.findIndex(myth => myth.id === currentId);
 
+  // Скидаємо прогрес при переході на новий міф
   useEffect(() => {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
+    setCorrectAnswersCount(0);
+    setServerMessage(null);
   }, [currentId]);
 
   if (!quizzes || quizzes.length === 0) return null;
 
   const currentQuiz = quizzes[currentQuestionIndex];
   const { question, options, correctAnswer, explanation } = currentQuiz;
-  
   const isLastQuestion = currentQuestionIndex === quizzes.length - 1;
+
+  // ОНОВЛЕНА функція вибору відповіді
+  const handleAnswerSelect = async (optionId) => {
+    if (selectedAnswer) return; // Захист від подвійного кліку
+    
+    setSelectedAnswer(optionId);
+    const isCorrect = optionId === correctAnswer;
+    
+    // Рахуємо правильні відповіді
+    const newCorrectCount = correctAnswersCount + (isCorrect ? 1 : 0);
+    if (isCorrect) setCorrectAnswersCount(newCorrectCount);
+
+    // ЯКЩО ЦЕ ОСТАННЄ ПИТАННЯ - ВІДПРАВЛЯЄМО РЕЗУЛЬТАТ НА СЕРВЕР
+    if (isLastQuestion) {
+      // Рахуємо відсоток успіху (від 0 до 100)
+      const scorePercent = Math.round((newCorrectCount / quizzes.length) * 100);
+      
+      // Рахуємо отримані XP (мінімум 10 за старання, максимум - mythXp)
+      const earnedXp = scorePercent === 100 ? mythXp : Math.max(10, Math.round((scorePercent / 100) * mythXp));
+
+      try {
+        const res = await completeMythService(currentId, scorePercent, earnedXp);
+        setServerMessage(`🎉 ${res.message} Отримано: +${res.addedXp} XP!`);
+        // Оновлюємо профіль, щоб оновився сайдбар та хедер
+        if (onQuizComplete) onQuizComplete();
+      } catch (err) {
+        // Якщо це гість або міф уже був пройдений
+        if (err.message.includes('Гість')) {
+          setServerMessage('💡 Авторизуйтесь, щоб зберігати отриманий досвід (XP).');
+        } else {
+          setServerMessage(`ℹ️ ${err.message}`); // "Ви вже розвінчали цей міф..."
+        }
+      }
+    }
+  };
 
   const handleNextQuestion = () => {
     setCurrentQuestionIndex(prev => prev + 1);
@@ -31,13 +70,11 @@ const MythQuiz = ({ quizzes, currentId }) => {
   };
 
   const handleNextMyth = () => {
-    // ЗАЦИКЛЕННЯ: Якщо це останній елемент, (currentIndex + 1) % length дасть 0 (перехід на початок)
     const nextIndex = (currentIndex + 1) % myths.length;
     navigate(`/myth/${myths[nextIndex].id}`);
   };
 
   const handlePrevMyth = () => {
-    // ЗАЦИКЛЕННЯ: Якщо це 0-й елемент, додаємо довжину, щоб перейти на самий кінець
     const prevIndex = (currentIndex - 1 + myths.length) % myths.length;
     navigate(`/myth/${myths[prevIndex].id}`);
   };
@@ -62,11 +99,8 @@ const MythQuiz = ({ quizzes, currentId }) => {
 
           let btnClass = "relative flex items-center p-4 bg-white border-2 rounded-2xl transition-all font-medium text-brand-dark ";
           
-          if (selectedAnswer) {
-              btnClass += "cursor-default "; 
-          } else {
-              btnClass += "cursor-pointer hover:shadow-md hover:border-brand-blue ";
-          }
+          if (selectedAnswer) btnClass += "cursor-default "; 
+          else btnClass += "cursor-pointer hover:shadow-md hover:border-brand-blue ";
           
           if (showSuccess) btnClass += "border-emerald-500 bg-emerald-50";
           else if (showError) btnClass += "border-red-500 bg-red-50";
@@ -76,7 +110,7 @@ const MythQuiz = ({ quizzes, currentId }) => {
           return (
             <button 
               key={option.id} 
-              onClick={() => !selectedAnswer && setSelectedAnswer(option.id)}
+              onClick={() => handleAnswerSelect(option.id)}
               disabled={selectedAnswer !== null} 
               className={btnClass}
             >
@@ -108,12 +142,18 @@ const MythQuiz = ({ quizzes, currentId }) => {
             <p className="text-brand-dark font-medium text-sm md:text-base leading-relaxed">
               {explanation}
             </p>
+            
+            {/* ВИВОДИМО ПОВІДОМЛЕННЯ ВІД СЕРВЕРА ЯКЩО ЦЕ ОСТАННЄ ПИТАННЯ */}
+            {isLastQuestion && serverMessage && (
+              <div className="mt-4 p-3 bg-white/60 border border-brand-dark/10 rounded-xl text-brand-dark font-bold text-sm inline-block">
+                {serverMessage}
+              </div>
+            )}
           </div>
         </div>
       )}
 
       <div className="flex justify-between items-center pt-4 mt-2 border-t border-brand-blue/20">
-        {/* Кнопка "Попередній" тепер ніколи не disabled, бо вона зациклена */}
         <button 
             onClick={handlePrevMyth}
             className="font-bold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-brand-blue hover:bg-brand-blue/10"
@@ -138,7 +178,7 @@ const MythQuiz = ({ quizzes, currentId }) => {
                 </button>
             )
         ) : (
-            <div className="text-sm font-bold text-brand-dark/40 px-4">Оберіть варіант відповіді</div>
+            <div className="text-sm font-bold text-brand-dark/40 px-4 hidden sm:block">Оберіть варіант відповіді</div>
         )}
       </div>
 

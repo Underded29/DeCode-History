@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // 1. Імпортуємо Link
 
 const SchoolBanner = () => {
   return (
@@ -24,10 +25,14 @@ const SchoolBanner = () => {
           </div>
         </div>
 
-        {/* Права частина: Кнопка */}
-        <button className="shrink-0 bg-brand-blue hover:bg-brand-blue/90 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-md shadow-brand-blue/20 cursor-pointer w-full md:w-auto">
+        {/* Права частина: Кнопка-посилання */}
+        {/* 2. Замінюємо button на Link та вказуємо шлях */}
+        <Link 
+          to="/contacts" 
+          className="shrink-0 bg-brand-blue hover:bg-brand-blue/90 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-md shadow-brand-blue/20 cursor-pointer w-full md:w-auto flex items-center justify-center"
+        >
           Співпрацювати →
-        </button>
+        </Link>
 
       </div>
     </div>

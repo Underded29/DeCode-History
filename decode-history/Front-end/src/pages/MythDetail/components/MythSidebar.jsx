@@ -1,8 +1,11 @@
 import React from 'react';
 import loupeImage from '../../../assets/notebookAndLoupe.png'; 
 
-// Додали пропс mythXp
-const MythSidebar = ({ mythXp }) => {
+const MythSidebar = ({ mythXp, user, isSaved, onToggleSave }) => {
+  
+  const progressPercent = user ? (user.currentXP / user.nextLevelXP) * 100 : 0;
+  const xpLeft = user ? user.nextLevelXP - user.currentXP : 0;
+
   return (
     <div className="flex flex-col gap-6">
       
@@ -23,30 +26,64 @@ const MythSidebar = ({ mythXp }) => {
                     className="h-28 w-auto object-contain relative z-10" 
                 />
             </div>
+
+            {/* МИТТЄВА КНОПКА ЗБЕРЕЖЕННЯ */}
+            <button 
+              type="button" 
+              onClick={onToggleSave}
+              className={`mt-6 w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold transition-all ${
+                isSaved 
+                  ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100' 
+                  : 'bg-white text-brand-blue border-2 border-brand-blue/30 hover:border-brand-blue hover:bg-brand-blue/5'
+              }`}
+            >
+              {isSaved ? (
+                <>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  </svg>
+                  Збережено в профілі
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  </svg>
+                  Зберегти міф
+                </>
+              )}
+            </button>
         </div>
 
       <div className="bg-white border border-brand-blue/30 rounded-3xl p-6 shadow-sm">
         <div className="flex items-center gap-3 font-bold text-lg text-brand-dark mb-5">
           <span className="text-2xl">🏆</span> За цей міф ти отримаєш
         </div>
+        
         <div className="flex gap-4 mb-6">
           <div className="flex-1 flex items-center gap-3 border border-brand-blue/20 rounded-2xl p-3 bg-brand-blue/5">
             <div className="w-10 h-10 rounded-full bg-white border border-brand-blue/20 text-brand-blue font-bold flex items-center justify-center text-xs">XP</div>
-            {/* Виводимо динамічне XP */}
-            <span className="font-bold text-brand-dark">+{mythXp || 50} XP</span>
+            <span className="font-bold text-brand-dark">до +{mythXp || 50} XP</span>
           </div>
-          <div className="flex-1 flex items-center gap-3 border border-brand-blue/20 rounded-2xl p-3 bg-brand-orange/5">
-            <div className="w-10 h-10 rounded-full bg-white border border-brand-orange/30 text-brand-orange text-xl flex items-center justify-center">⭐</div>
-            <span className="font-bold text-brand-dark">+1 до серії</span>
+          <div className="flex-1 flex items-center justify-center gap-2 border border-brand-orange/20 rounded-2xl p-3 bg-brand-orange/5">
+            <span className="text-xl">🔥</span>
+            <span className="font-bold text-brand-dark">Серія</span>
           </div>
         </div>
-        {/* Прогрес-бар поки статичний, він запрацює після підключення бекенду користувача */}
+
         <div>
           <div className="flex justify-between text-xs font-bold text-brand-dark/60 mb-2">
-            <span>Ще 30 XP до нового рівня</span>
+            {user ? (
+              <span>Ще {xpLeft} XP до рівня {user.level + 1}</span>
+            ) : (
+              <span>Увійдіть, щоб зберігати прогрес</span>
+            )}
           </div>
           <div className="w-full h-2 bg-brand-dark/10 rounded-full overflow-hidden">
-            <div className="h-full bg-brand-blue w-[85%] rounded-full"></div>
+            <div 
+              className="h-full bg-brand-blue rounded-full transition-all duration-700 ease-out" 
+              style={{ width: `${progressPercent}%` }}
+            ></div>
           </div>
         </div>
       </div>

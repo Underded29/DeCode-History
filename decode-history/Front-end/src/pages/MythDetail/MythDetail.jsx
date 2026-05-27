@@ -1,19 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom'; 
 
 import MythFlipCard from './components/MythFlipCard';
 import MythQuiz from './components/MythQuiz';
 import MythSidebar from './components/MythSidebar';
-import { useMythsData } from '../MythContext/MythContext'; // <-- Імпортуємо наш контекст
+import { useMythsData } from '../MythContext/MythContext'; 
+import { fetchUserProfile, toggleSaveMythService } from '../../services/userService'; 
 
 const MythDetail = () => {
   const { id } = useParams();
-  
-  // Дістаємо масив міфів та стан завантаження з глобального контексту
   const { myths, loading } = useMythsData();
+  
+  const [user, setUser] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
 
-  // Шукаємо конкретний міф серед завантажених
+  const loadUser = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const data = await fetchUserProfile();
+        setUser(data);
+        
+        if (data.savedMyths && data.savedMyths.map(String).includes(id.toString())) {
+          setIsSaved(true);
+        } else {
+          setIsSaved(false);
+        }
+      } catch (error) {
+        console.error("Помилка завантаження профілю:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, [id]);
+
   const currentMyth = myths.find(m => m.id === id);
+
+  // МИТТЄВЕ ЗБЕРЕЖЕННЯ
+  const handleToggleSave = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Увійдіть у систему, щоб зберігати міфи!");
+      return;
+    }
+    
+    // Запам'ятовуємо старий стан на випадок помилки сервера
+    const previousState = isSaved;
+    
+    // Миттєво перемикаємо колір кнопки
+    setIsSaved(!isSaved); 
+    
+    try {
+      // Відправляємо запит
+      const response = await toggleSaveMythService(id);
+      setIsSaved(response.isSaved); 
+    } catch (error) {
+      console.error("ПОМИЛКА БЕКЕНДУ ПРИ ЗБЕРЕЖЕННІ:", error.message);
+      // Відкочуємо кнопку назад, якщо сервер не зберіг
+      setIsSaved(previousState);
+      alert("Не вдалося зберегти міф. Перевірте консоль (F12) на наявність помилок.");
+    }
+  };
 
   if (loading) {
     return (
@@ -42,6 +91,7 @@ const MythDetail = () => {
   }
 
   const cardData = {
+    ...currentMyth, 
     fakeTitle: currentMyth.title,
     fakeNarrative: currentMyth.fakeNarrative,
     truthTitle: "Спростування міфу", 
@@ -63,7 +113,6 @@ const MythDetail = () => {
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        
         <div className="lg:col-span-2 flex flex-col gap-2">
           <MythFlipCard mythData={cardData} />
           
@@ -71,15 +120,20 @@ const MythDetail = () => {
              <MythQuiz 
                quizzes={currentMyth.quizzes} 
                currentId={id} 
-               totalMyths={myths.length} /* <-- Тепер кількість міфів завжди актуальна */
+               mythXp={currentMyth.xp || 50} 
+               onQuizComplete={loadUser} 
              />  
           )}
         </div>
 
         <div className="lg:col-span-1 sticky top-[120px]">
-          <MythSidebar mythXp={currentMyth.xp} />
+          <MythSidebar 
+            mythXp={currentMyth.xp} 
+            user={user} 
+            isSaved={isSaved} 
+            onToggleSave={handleToggleSave} 
+          />
         </div>
-
       </div>
     </div>
   );

@@ -1,34 +1,69 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom'; // 1. Імпортуємо хук для читання state
+import { useLocation } from 'react-router-dom';
 
 const ContactForm = () => {
-  const location = useLocation(); // Отримуємо дані з роутера
-  
-  // 2. Встановлюємо початкове значення теми, якщо ми прийшли з сайдбара
+  const location = useLocation(); 
   const initialSubject = location.state?.subject || '';
 
   const [formData, setFormData] = useState({ 
     name: '', 
     email: '', 
-    subject: initialSubject, // Використовуємо початкове значення
+    subject: initialSubject, 
     message: '' 
   });
+  
   const [status, setStatus] = useState('idle');
+  const [errorMessage, setErrorMessage] = useState(''); // Додано стейт для повідомлення про помилку
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('submitting');
+    setErrorMessage('');
     
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' }); 
+    // ВАЛІДАЦІЯ EMAIL
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessage('Будь ласка, введіть коректний email (наприклад, name@example.com)');
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 4000);
+      return; 
+    }
+
+    const payload = {
+      access_key: "bf6c12a4-90f1-4b17-9152-4c54e20d9a12",
+      from_name: "DeCode Форма Контакту",
+      subject: `Нове повідомлення: ${formData.subject}`,
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+    };
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload)
+      });
       
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' }); 
+        setTimeout(() => setStatus('idle'), 4000); 
+      } else {
+        setErrorMessage('Щось пішло не так на сервері. Спробуйте ще раз.');
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 3000);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage('Помилка підключення. Перевірте інтернет та спробуйте ще раз.');
+      setStatus('error');
       setTimeout(() => setStatus('idle'), 3000);
-    }, 1500);
+    }
   };
 
   return (
@@ -45,14 +80,13 @@ const ContactForm = () => {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1">
         <input required type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Ваше ім'я" className="w-full bg-transparent border border-brand-blue/20 rounded-xl px-4 py-3 text-brand-dark focus:outline-none focus:border-brand-blue transition-colors" />
-        <input required type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full bg-transparent border border-brand-blue/20 rounded-xl px-4 py-3 text-brand-dark focus:outline-none focus:border-brand-blue transition-colors" />
+        <input required type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full bg-transparent border border-brand-blue/20 rounded-xl px-4 py-3 text-brand-dark focus:outline-none focus:border-brand-blue transition-colors" />
         
         <select required name="subject" value={formData.subject} onChange={handleChange} className="w-full bg-transparent border border-brand-blue/20 rounded-xl px-4 py-3 text-brand-dark focus:outline-none focus:border-brand-blue transition-colors appearance-none cursor-pointer">
           <option value="" disabled>Тема</option>
           <option value="general">Загальне питання</option>
           <option value="bug">Помилка на сайті</option>
           <option value="content">Пропозиція щодо контенту</option>
-          {/* 3. Додаємо нову опцію */}
           <option value="myth">Запропонувати міф</option>
         </select>
 
@@ -64,7 +98,6 @@ const ContactForm = () => {
         </button>
       </form>
 
-      {/* Оверлей успіху */}
       {status === 'success' && (
         <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 z-10 animate-fade-in">
           <div className="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mb-4">
@@ -72,6 +105,16 @@ const ContactForm = () => {
           </div>
           <h4 className="text-xl font-bold text-brand-dark mb-2">Успішно надіслано!</h4>
           <p className="text-brand-dark/70 font-medium">Ми отримали ваше повідомлення і скоро з вами зв'яжемося.</p>
+        </div>
+      )}
+
+      {status === 'error' && (
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 z-10 animate-fade-in">
+          <div className="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-4">
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </div>
+          <h4 className="text-xl font-bold text-brand-dark mb-2">Помилка</h4>
+          <p className="text-brand-dark/70 font-medium">{errorMessage}</p>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { fetchUserProfile } from '../Services/userService';
+import { Link, useNavigate } from 'react-router-dom'; // Додано useNavigate
+import { fetchUserProfile } from '../services/userService'; // Виправлено Services на services
 
 const pages = {
   'Каталог міфів': '/catalog',
@@ -12,32 +12,59 @@ const pages = {
 const Sidebar = ({ isOpen, onClose }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate(); // Ініціалізуємо навігацію для виходу
 
   useEffect(() => {
     const checkAuth = async () => {
+      // 1. Швидка перевірка наявності токена
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        // Якщо токена немає, одразу показуємо меню для гостя
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+
+      // 2. Якщо токен є, завантажуємо дані з бекенду
       try {
         const data = await fetchUserProfile();
         setUser(data);
       } catch (error) {
         console.error("Помилка авторизації в Sidebar:", error);
+        // Якщо сервер повернув помилку (наприклад, токен прострочений), видаляємо його
+        localStorage.removeItem('token');
         setUser(null);
       } finally {
         setIsLoading(false);
       }
     };
     
-    checkAuth();
-  }, []);
+    // Перевіряємо авторизацію щоразу, коли сайдбар відкривається
+    if (isOpen) {
+      checkAuth();
+    }
+  }, [isOpen]); // Додано залежність isOpen
 
+  // ПОВНОЦІННИЙ ВИХІД З АКАУНТА
   const handleLogout = () => {
-    console.log("Вихід з акаунта...");
+    // 1. Очищаємо сховище
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    
+    // 2. Оновлюємо локальний стейт
     setUser(null); 
+    
+    // 3. Закриваємо сайдбар
     onClose();
+    
+    // 4. Перекидаємо на сторінку логіну
+    navigate('/login');
   };
 
   return (
     <>
-      {/* Затемнення фону (Backdrop) - тепер завжди в DOM для плавної анімації */}
+      {/* Затемнення фону (Backdrop) */}
       <div 
         className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ease-in-out ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -68,16 +95,18 @@ const Sidebar = ({ isOpen, onClose }) => {
             onClick={onClose}
             className="p-6 border-b border-brand-blue/10 flex items-center gap-4 bg-brand-blue/5 hover:bg-brand-blue/10 transition-colors cursor-pointer group block"
           >
-            <div className="relative shrink-0 w-12 h-12 rounded-full border-2 border-brand-blue/40 group-hover:border-brand-blue transition-colors overflow-hidden bg-white flex items-center justify-center">
-              {user.avatarUrl ? (
-                <img src={user.avatarUrl} alt="Аватар" className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-xl">👦🏻</span>
-              )}
-            </div>
-            <div className="flex flex-col overflow-hidden">
-              <h3 className="font-bold text-brand-dark truncate group-hover:text-brand-blue transition-colors">{user.name}</h3>
-              <p className="text-xs font-bold text-brand-blue">Рівень {user.level}</p>
+            <div className="flex items-center gap-4">
+              <div className="relative shrink-0 w-12 h-12 rounded-full border-2 border-brand-blue/40 group-hover:border-brand-blue transition-colors overflow-hidden bg-white flex items-center justify-center">
+                {user.avatarUrl ? (
+                  <img src={user.avatarUrl} alt="Аватар" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-xl">👦🏻</span>
+                )}
+              </div>
+              <div className="flex flex-col overflow-hidden">
+                <h3 className="font-bold text-brand-dark truncate group-hover:text-brand-blue transition-colors">{user.name}</h3>
+                <p className="text-xs font-bold text-brand-blue">Рівень {user.level}</p>
+              </div>
             </div>
           </Link>
         ) : (
@@ -97,6 +126,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         {/* ================= 2. НАВІГАЦІЯ ================= */}
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {Object.entries(pages).map(([label, href], index) => {
+            // Приховуємо "Особистий кабінет" для гостей
             if (!user && label === 'Особистий кабінет') return null;
 
             return (

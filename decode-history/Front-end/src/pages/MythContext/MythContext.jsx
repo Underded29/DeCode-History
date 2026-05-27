@@ -69,13 +69,16 @@ export const MythProvider = ({ children }) => {
             fakeNarrative: acf.fake_narrative || '',
             truthFact: acf.truth_fact || '',
             xp: parseInt(acf.xp_reward) || 50,
-            image: imageUrl, // Тепер тут ЗАВЖДИ є посилання (реальне або плейсхолдер)
+            image: imageUrl,
             quizzes: quizzes,
             readTime: acf.read_time || '10 хв',
             slug: item.slug,
             views: Math.floor(Math.random() * 1200) + 400,
             difficulty: parseInt(acf.xp_reward) > 200 ? "Важко" : "Середня",
             status: acf.status || 'Міф',
+            
+            // МАГІЯ ТУТ: Передаємо весь оригінальний об'єкт ACF далі в карточку!
+            acf: acf 
           };
         });
 
