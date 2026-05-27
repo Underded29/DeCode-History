@@ -3,7 +3,7 @@ name: Deploy DeCode to ADM.Tools
 on:
   push:
     branches:
-      - main # Запускається автоматично при git push у гілку main
+      - main 
 
 jobs:
   deploy:
@@ -46,8 +46,9 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: decode-history/Back-end/ # Твоя папка з Node.js сервером
-          server-dir: /api/ # Папка на хостингу для бекенду
+          local-dir: decode-history/Back-end/ 
+          server-dir: /api/ 
+          timeout: 600000
           exclude: |
             **/.env
             **/node_modules/**
