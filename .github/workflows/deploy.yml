@@ -36,8 +36,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./Front-end/dist/
-          server-dir: /app/
+          local-dir: .decode-history/Front-end/dist/
+          server-dir: /
 
       # 2. ДЕПЛОЙ БЕКЕНДУ
       - name: 🚀 Деплой Бекенду на хостинг
@@ -46,7 +46,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./Back-end/ # Твоя папка з Node.js сервером
+          local-dir: .decode-history/Back-end/ # Твоя папка з Node.js сервером
           server-dir: /api/ # Папка на хостингу для бекенду
           exclude: |
             **/.env
