@@ -39,7 +39,16 @@ jobs:
           local-dir: decode-history/Front-end/dist/
           server-dir: /
 
+      # ==========================================
       # 2. ДЕПЛОЙ БЕКЕНДУ
+      # ==========================================
+      - name: 🗑 Очищення зайвих файлів (Залізобетонний метод)
+        run: |
+          rm -rf decode-history/Back-end/node_modules
+          rm -rf decode-history/Back-end/.env
+          rm -rf decode-history/Back-end/uploads
+          rm -rf decode-history/Back-end/.git
+
       - name: 🚀 Деплой Бекенду на хостинг
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -49,7 +58,3 @@ jobs:
           local-dir: decode-history/Back-end/ 
           server-dir: /api/ 
           timeout: 600000
-          exclude: |
-            **/.env
-            **/node_modules/**
-            **/uploads/**
