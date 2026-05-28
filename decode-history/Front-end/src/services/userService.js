@@ -1,7 +1,6 @@
 const API_URL = import.meta.env.PROD 
-  ? 'https://api.history.science.kh.ua/api/users' 
-  : 'http://localhost:5001/api/users';
-
+  ? 'https://api.history.science.kh.ua/api' 
+  : 'http://localhost:5001/api';
 // Функція для отримання профілю з токеном
 export const fetchUserProfile = async () => {
   const tokenRaw = localStorage.getItem('token');

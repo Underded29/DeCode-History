@@ -11,9 +11,9 @@ const app = express();
 
 const userRoutes = require('./src/routes/user');
 app.use(cors({
-  origin: 'https://history.science.kh.ua', // Твій фронтенд
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true, // Дозволяє передавати токени (cookies/headers)
+  origin: 'https://history.science.kh.ua',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());

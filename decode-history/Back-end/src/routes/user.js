@@ -22,6 +22,25 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+router.post('/upload-avatar', auth, upload.single('avatar'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'Файл не завантажено' });
+    }
+
+    // Формуємо URL до файлу (залежить від того, як у тебе налаштований статик)
+    const avatarUrl = `/uploads/${req.file.filename}`;
+
+    // Оновлюємо базу даних
+    await db.query('UPDATE users SET avatar_url = ? WHERE id = ?', [avatarUrl, req.user.id]);
+
+    res.json({ avatarUrl: avatarUrl });
+  } catch (err) {
+    console.error('Помилка сервера при завантаженні:', err);
+    res.status(500).json({ error: 'Не вдалося оновити аватар' });
+  }
+});
+
 function calculateLevelData(totalXp) {
   let level = 1;
   let currentXP = totalXp;
