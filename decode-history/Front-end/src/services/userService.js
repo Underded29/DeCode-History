@@ -1,5 +1,5 @@
 const API_URL = import.meta.env.PROD 
-  ? 'https://history.science.kh.ua/api/users' 
+  ? 'https://api.history.science.kh.ua/api/users' 
   : 'http://localhost:5001/api/users';
 
 // Функція для отримання профілю з токеном
