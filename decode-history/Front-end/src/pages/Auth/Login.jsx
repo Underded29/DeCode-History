@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.PROD 
+  ? 'https://api.history.science.kh.ua/api/auth'
+  : 'http://localhost:5001/api/auth';
+
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -22,7 +26,7 @@ const Login = () => {
     
     try {
       // Відправляємо запит на наш бекенд
-      const response = await fetch('http://localhost:5001/api/auth/login', {
+      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

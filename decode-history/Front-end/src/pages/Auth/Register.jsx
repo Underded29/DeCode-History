@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+// Додаємо динамічну адресу
+const API_URL = import.meta.env.PROD 
+  ? 'https://api.history.science.kh.ua/api/auth' // Якщо в server.js префіксу немає, прибери тут /api
+  : 'http://localhost:5001/api/auth';
+
 const Register = () => {
   const navigate = useNavigate();
   
@@ -85,7 +90,7 @@ const Register = () => {
 
     try {
       // Робимо запит до нашого бекенду
-      const response = await fetch('http://localhost:5001/api/auth/register', {
+      const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
