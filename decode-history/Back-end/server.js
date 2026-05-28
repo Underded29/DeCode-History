@@ -4,6 +4,9 @@ const cors = require('cors');
 const db = require('./src/db'); 
 const path = require('path');
 
+const PORT = process.env.PORT || 5001;
+const HOST = process.env.HOST || 'localhost';
+
 // Імпортуємо наш новий роутер авторизації
 const authRoutes = require('./src/routes/auth'); 
 
@@ -43,13 +46,6 @@ app.use('/api/users', userRoutes); // Підключаємо роутер кор
 
 const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, async () => {
-  console.log(`🚀 Сервер успішно запущено на порту ${PORT}`);
-  
-  try {
-    await db.query('SELECT 1');
-    console.log('✅ Базу даних успішно знайдено та підключено!');
-  } catch (err) {
-    console.error('❌ Помилка підключення до БД:', err.message);
-  }
+app.listen(PORT, HOST, () => {
+  console.log(`Сервер успішно запущено на http://${HOST}:${PORT}`);
 });
