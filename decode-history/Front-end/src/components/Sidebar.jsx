@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Додано useNavigate
-import { fetchUserProfile } from '../services/userService'; // Виправлено Services на services
+import { Link, useNavigate } from 'react-router-dom';
+import { fetchUserProfile } from '../services/userService'; 
 
 const pages = {
   'Каталог міфів': '/catalog',
@@ -12,27 +12,23 @@ const pages = {
 const Sidebar = ({ isOpen, onClose }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate(); // Ініціалізуємо навігацію для виходу
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const checkAuth = async () => {
-      // 1. Швидка перевірка наявності токена
       const token = localStorage.getItem('token');
       
       if (!token) {
-        // Якщо токена немає, одразу показуємо меню для гостя
         setUser(null);
         setIsLoading(false);
         return;
       }
 
-      // 2. Якщо токен є, завантажуємо дані з бекенду
       try {
         const data = await fetchUserProfile();
         setUser(data);
       } catch (error) {
         console.error("Помилка авторизації в Sidebar:", error);
-        // Якщо сервер повернув помилку (наприклад, токен прострочений), видаляємо його
         localStorage.removeItem('token');
         setUser(null);
       } finally {
@@ -40,25 +36,16 @@ const Sidebar = ({ isOpen, onClose }) => {
       }
     };
     
-    // Перевіряємо авторизацію щоразу, коли сайдбар відкривається
     if (isOpen) {
       checkAuth();
     }
-  }, [isOpen]); // Додано залежність isOpen
+  }, [isOpen]); 
 
-  // ПОВНОЦІННИЙ ВИХІД З АКАУНТА
   const handleLogout = () => {
-    // 1. Очищаємо сховище
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    
-    // 2. Оновлюємо локальний стейт
     setUser(null); 
-    
-    // 3. Закриваємо сайдбар
     onClose();
-    
-    // 4. Перекидаємо на сторінку логіну
     navigate('/login');
   };
 
@@ -97,8 +84,13 @@ const Sidebar = ({ isOpen, onClose }) => {
           >
             <div className="flex items-center gap-4">
               <div className="relative shrink-0 w-12 h-12 rounded-full border-2 border-brand-blue/40 group-hover:border-brand-blue transition-colors overflow-hidden bg-white flex items-center justify-center">
+                {/* ОНОВЛЕНА ЛОГІКА ДЛЯ АВАТАРА */}
                 {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="Аватар" className="w-full h-full object-cover" />
+                  <img 
+                    src={user.avatarUrl.startsWith('http') ? user.avatarUrl : `https://api.history.science.kh.ua${user.avatarUrl}`} 
+                    alt="Аватар" 
+                    className="w-full h-full object-cover" 
+                  />
                 ) : (
                   <span className="text-xl">👦🏻</span>
                 )}
@@ -126,7 +118,6 @@ const Sidebar = ({ isOpen, onClose }) => {
         {/* ================= 2. НАВІГАЦІЯ ================= */}
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {Object.entries(pages).map(([label, href], index) => {
-            // Приховуємо "Особистий кабінет" для гостей
             if (!user && label === 'Особистий кабінет') return null;
 
             return (
