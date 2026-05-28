@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: decode-history/Front-end/dist/
-          server-dir: /
+          server-dir: /history/
 
      # ==========================================
       # 2. ДЕПЛОЙ БЕКЕНДУ
@@ -60,5 +60,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: decode-history/Back-end/ 
-          server-dir: /api/ 
+          server-dir: /api.history/
           timeout: 600000
