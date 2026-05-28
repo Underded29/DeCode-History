@@ -59,8 +59,12 @@ const ProfileHeader = ({ user, onAvatarChange }) => {
                // 1. Показуємо тимчасове прев'ю, якщо воно є
                <img src={tempAvatarPreview} alt="Прев'ю аватара" className="w-full h-full object-cover" />
              ) : user.avatarUrl ? (
-               // 2. Інакше показуємо аватар з бази, якщо він є
-               <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+               // 2. Інакше показуємо аватар з бази, якщо він є (ТУТ БУЛИ ЗМІНИ)
+               <img 
+                 src={user.avatarUrl.startsWith('http') ? user.avatarUrl : `https://api.history.science.kh.ua${user.avatarUrl}`} 
+                 alt={user.name} 
+                 className="w-full h-full object-cover" 
+               />
              ) : (
                // 3. Якщо нічого немає - дефолтний емодзі
                <span className="text-4xl">👦🏻</span>
@@ -68,7 +72,7 @@ const ProfileHeader = ({ user, onAvatarChange }) => {
 
           </div>
           
-          {/* КНОПКА РЕДАГУВАННЯ (тепер працює) */}
+          {/* КНОПКА РЕДАГУВАННЯ */}
           <button 
             onClick={handleEditClick} // Прив'язуємо тригер
             className="absolute bottom-0 right-0 w-8 h-8 bg-white border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-blue hover:text-white transition-colors shadow-sm cursor-pointer z-20"
