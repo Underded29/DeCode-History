@@ -8,7 +8,7 @@ export const fetchUserProfile = async () => {
 
   const token = tokenRaw.trim(); // Очищаємо від прихованих символів
 
-  const response = await fetch(`${API_URL}/profile`, {
+  const response = await fetch(`${API_URL}/users/profile`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -30,7 +30,7 @@ export const updateUserProfile = async (updatedData) => {
 
   const token = tokenRaw.trim(); // Очищаємо від прихованих символів
 
-  const response = await fetch(`${API_URL}/profile`, {
+  const response = await fetch(`${API_URL}/users/profile`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const uploadAvatarService = async (fileObject) => {
   const formData = new FormData();
   formData.append('avatar', fileObject);
 
-  const response = await fetch(`${API_URL}/upload-avatar`, {
+  const response = await fetch(`${API_URL}/users/upload-avatar`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`
