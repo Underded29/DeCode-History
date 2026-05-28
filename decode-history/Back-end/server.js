@@ -4,9 +4,6 @@ const cors = require('cors');
 const db = require('./src/db'); 
 const path = require('path');
 
-const PORT = process.env.PORT || 5001;
-const HOST = process.env.HOST || 'localhost';
-
 // Імпортуємо наш новий роутер авторизації
 const authRoutes = require('./src/routes/auth'); 
 
@@ -45,6 +42,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); // Підключаємо роутер користувачів
 
 const PORT = process.env.PORT || 5001;
+const HOST = process.env.HOST || 'localhost';
 
 app.listen(PORT, HOST, () => {
   console.log(`Сервер успішно запущено на http://${HOST}:${PORT}`);
