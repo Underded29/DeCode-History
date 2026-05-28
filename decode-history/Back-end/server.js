@@ -10,7 +10,12 @@ const authRoutes = require('./src/routes/auth');
 const app = express();
 
 const userRoutes = require('./src/routes/user');
-app.use(cors());
+app.use(cors({
+  origin: 'https://history.science.kh.ua', // Твій фронтенд
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true, // Дозволяє передавати токени (cookies/headers)
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
