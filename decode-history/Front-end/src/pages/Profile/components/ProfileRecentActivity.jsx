@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Додано імпорт Link
 
 const ProfileRecentActivity = ({ activities = [] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,14 +19,22 @@ const ProfileRecentActivity = ({ activities = [] }) => {
   const previewActivities = activities.slice(0, 3);
 
   const renderActivityItem = (activity, index) => (
-    <div key={index} className="flex items-center gap-3 p-3 border border-brand-blue/10 rounded-2xl bg-white hover:border-brand-blue/30 transition-colors">
-      <div className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center border bg-emerald-50 border-emerald-100 text-emerald-500">
+    // Замінено div на Link, додано правильний шлях за mythId та стилі для клікабельності (group, hover:shadow)
+    <Link 
+      to={`/myth/${activity.mythId}`} 
+      key={index} 
+      className="flex items-center gap-3 p-3 border border-brand-blue/10 rounded-2xl bg-white hover:border-brand-blue/40 hover:shadow-sm transition-all cursor-pointer group"
+    >
+      <div className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center border bg-emerald-50 border-emerald-100 text-emerald-500 group-hover:bg-emerald-100 transition-colors">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
       </div>
       <div className="flex-1 flex flex-col justify-center">
-        <p className="text-xs font-bold text-brand-dark line-clamp-2 leading-tight mb-1">{activity.title}</p>
+        {/* Додано зміну кольору тексту на синій при наведенні (group-hover:text-brand-blue) */}
+        <p className="text-xs font-bold text-brand-dark line-clamp-2 leading-tight mb-1 group-hover:text-brand-blue transition-colors">
+          {activity.title}
+        </p>
         <div className="flex items-center justify-between gap-2">
           <span className="text-xs font-medium text-brand-dark/60">
             Розвінчано • <span className="text-emerald-600 font-bold">+{activity.xp} XP</span>
@@ -33,7 +42,11 @@ const ProfileRecentActivity = ({ activities = [] }) => {
           {activity.date && <span className="text-[10px] font-bold text-brand-dark/40 uppercase shrink-0">{formatDate(activity.date)}</span>}
         </div>
       </div>
-    </div>
+      {/* Додано іконку стрілочки для індикації переходу */}
+      <svg className="w-4 h-4 shrink-0 text-brand-dark/20 group-hover:text-brand-blue mr-1 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </Link>
   );
 
   return (
@@ -64,13 +77,11 @@ const ProfileRecentActivity = ({ activities = [] }) => {
       {/* МОДАЛЬНЕ ВІКНО З АНІМАЦІЄЮ */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-          {/* Темний фон - плавна поява */}
           <div 
             className="absolute inset-0 bg-brand-dark/70 backdrop-blur-sm cursor-pointer animate-fade-in" 
             onClick={() => setIsModalOpen(false)}
           ></div>
           
-          {/* Картка модалки - виринає знизу */}
           <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[80vh] animate-fade-in-up">
             
             <div className="flex items-center justify-between p-6 border-b border-brand-blue/10 bg-brand-blue/5">

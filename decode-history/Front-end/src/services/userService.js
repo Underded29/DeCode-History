@@ -88,7 +88,7 @@ export const completeMythService = async (mythId, score, earnedXp) => {
 
   const token = tokenRaw.trim(); // Очищаємо від прихованих символів
 
-  const response = await fetch(`${API_URL}/complete-myth`, {
+  const response = await fetch(`${API_URL}/users/complete-myth`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export const toggleSaveMythService = async (mythId) => {
 
   const token = tokenRaw.trim();
 
-  const response = await fetch(`${API_URL}/toggle-save`, {
+  const response = await fetch(`${API_URL}/users/toggle-save`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

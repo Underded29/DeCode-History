@@ -14,7 +14,7 @@ const ProfileSavedMyths = ({ savedMyths = [] }) => {
 
   const renderMythItem = (myth, index) => (
     <Link 
-      to={`/myth/${myth.slug || myth.id}`} 
+      to={`/myth/${myth.id}`} 
       key={myth.id || index} 
       className="flex items-center gap-3 p-2 border border-brand-blue/10 rounded-2xl cursor-pointer hover:border-brand-blue/40 hover:shadow-sm transition-all group bg-white"
     >
