@@ -26,7 +26,7 @@ export const MythProvider = ({ children }) => {
       try {
         setLoading(true);
 
-        const catResponse = await fetch('https://history.science.kh.ua/wp-json/wp/v2/categories?per_page=100&hide_empty=false');
+        const catResponse = await fetch('https://history.science.kh.ua/cms/wp-json/wp/v2/categories?per_page=100&hide_empty=false');
         const catData = await catResponse.json();
         const fetchedCategories = catData
           .filter(cat => cat.name.toLowerCase() !== 'зайва')
@@ -34,7 +34,7 @@ export const MythProvider = ({ children }) => {
 
         setCategories(['Всі', ...fetchedCategories]);
 
-        const mythResponse = await fetch('https://history.science.kh.ua/wp-json/wp/v2/myth?per_page=100&_embed');
+        const mythResponse = await fetch('https://history.science.kh.ua/cms/wp-json/wp/v2/myth?per_page=100&_embed');
         const mythData = await mythResponse.json();
 
         const formattedMyths = mythData.map(item => {
