@@ -16,6 +16,7 @@ import Profile from './pages/Profile/Profile';
 import Contacts from './pages/Contacts/Contacts';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       
