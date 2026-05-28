@@ -39,15 +39,19 @@ jobs:
           local-dir: decode-history/Front-end/dist/
           server-dir: /
 
-      # ==========================================
+     # ==========================================
       # 2. ДЕПЛОЙ БЕКЕНДУ
       # ==========================================
+      - name: ⏳ Пауза для обходу фаєрволу ADM.Tools
+        run: sleep 15
+
       - name: 🗑 Очищення зайвих файлів (Залізобетонний метод)
         run: |
           rm -rf decode-history/Back-end/node_modules
           rm -rf decode-history/Back-end/.env
           rm -rf decode-history/Back-end/uploads
           rm -rf decode-history/Back-end/.git
+          rm -f decode-history/Back-end/db_backup.dump
 
       - name: 🚀 Деплой Бекенду на хостинг
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
