@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:5001/api/users';
+const API_URL = import.meta.env.PROD 
+  ? 'https://history.science.kh.ua/api/users' 
+  : 'http://localhost:5001/api/users';
 
 // Функція для отримання профілю з токеном
 export const fetchUserProfile = async () => {
