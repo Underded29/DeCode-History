@@ -9,9 +9,14 @@ const authRoutes = require('./src/routes/auth');
 
 const app = express();
 
+module.exports = app;
+
 const userRoutes = require('./src/routes/user');
 app.use(cors({
-  origin: 'https://history.science.kh.ua',
+  origin: [
+    'https://history.science.kh.ua',
+    'http://localhost:5173'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']

@@ -45,7 +45,7 @@ jobs:
       - name: ⏳ Пауза для обходу фаєрволу ADM.Tools
         run: sleep 15
 
-      - name: 🗑 Очищення зайвих файлів (Залізобетонний метод)
+      - name: 🗑 Очищення зайвих файлів
         run: |
           rm -rf decode-history/Back-end/node_modules
           rm -rf decode-history/Back-end/.env
