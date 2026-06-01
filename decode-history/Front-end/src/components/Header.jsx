@@ -34,7 +34,7 @@ const Header = ({ onOpenMenu }) => {
     };
     
     loadData();
-  }, [location.pathname]); // 3. Додаємо location.pathname в залежності. Тепер хедер оновлюється при кожному переході!
+  }, [location.pathname]); // 3. Додаємо location.pathname в залежності
 
   const progressPercent = user ? (user.currentXP / user.nextLevelXP) * 100 : 0;
 

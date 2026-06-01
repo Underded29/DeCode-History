@@ -28,7 +28,7 @@ router.post('/upload-avatar', auth, upload.single('avatar'), async (req, res) =>
       return res.status(400).json({ error: 'Файл не завантажено' });
     }
 
-    // Формуємо URL до файлу (залежить від того, як у тебе налаштований статик)
+    // Формуємо URL до файлу
     const avatarUrl = `/uploads/${req.file.filename}`;
 
     // Оновлюємо базу даних

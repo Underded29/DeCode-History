@@ -13,7 +13,7 @@ const ContactForm = () => {
   });
   
   const [status, setStatus] = useState('idle');
-  const [errorMessage, setErrorMessage] = useState(''); // Додано стейт для повідомлення про помилку
+  const [errorMessage, setErrorMessage] = useState(''); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

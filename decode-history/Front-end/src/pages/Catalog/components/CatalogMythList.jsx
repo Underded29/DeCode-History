@@ -55,7 +55,6 @@ const CatalogMythList = ({ myths, itemsPerPage = 6 }) => {
 
   return (
     <div className="flex flex-col gap-8 w-full">
-      {/* 3. Додаємо класи transition-opacity та duration-300 для контейнера */}
       <div 
         className={`grid grid-cols-1 md:grid-cols-2 gap-6 w-full transition-all duration-300 ease-in-out ${
           isFading ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'

@@ -1,5 +1,4 @@
 import React from 'react';
-// Імпортуй свої зображення тут:
 import footerLeftImg from '../assets/footerLeftPic.png';
 import footerRightImg from '../assets/footerRightPic.png';
 

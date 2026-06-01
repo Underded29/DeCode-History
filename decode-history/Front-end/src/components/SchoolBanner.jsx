@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // 1. Імпортуємо Link
+import { Link } from 'react-router-dom'; 
 
 const SchoolBanner = () => {
   return (

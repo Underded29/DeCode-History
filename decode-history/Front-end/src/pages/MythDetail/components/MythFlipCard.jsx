@@ -13,7 +13,6 @@ const MythFlipCard = ({ mythData }) => {
     return () => { document.body.style.overflow = 'unset'; };
   }, [isModalOpen]);
 
-  // МАГІЯ ТУТ: Витягуємо об'єкт acf (якщо він є, тобто якщо це WordPress)
   const acf = mythData.acf || {};
 
   // Шукаємо розширений текст спочатку в acf, потім просто в mythData
@@ -23,7 +22,7 @@ const MythFlipCard = ({ mythData }) => {
     mythData.extendedRefutation || 
     `<p class="mb-4 text-brand-dark/50">Детальне спростування ще не додано.</p>`;
 
-  // ДИНАМІЧНИЙ ЗБІР ДЖЕРЕЛ (з урахуванням WordPress ACF)
+  // ДИНАМІЧНИЙ ЗБІР ДЖЕРЕЛ 
   let sources = [];
   
   if (mythData.sources && Array.isArray(mythData.sources)) {

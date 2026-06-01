@@ -1,11 +1,6 @@
 // src/components/About/AboutHero.jsx
 import React from 'react';
 import heroAbout from '../../../assets/heroAbout.png'; 
-// ІМПОРТИ ТВОЇХ ЗОБРАЖЕНЬ (експортуй їх з Figma без фону)
-// Якщо ти створиш окремі файли для заголовка та Тризуба, розкоментуй ці лінії:
-// import proNasHeaderImg from '../../assets/about/pro-nas-header.png'; 
-// import tryzubShieldImg from '../../assets/about/tryzub-shield.png'; 
-// import uaFlagImg from '../../assets/about/ua-flag.png'; // Прапор окремо
 
 const AboutHero = () => {
   return (

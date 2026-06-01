@@ -5,7 +5,6 @@ const ProfileStats = ({ stats, currentXP, nextLevelXP }) => {
     <div className="bg-white border border-brand-blue/30 rounded-[32px] p-6 shadow-sm flex flex-col">
       <h2 className="text-lg font-bold text-brand-blue mb-4">Твій прогрес</h2>
       
-      {/* Змінили на md:grid-cols-4 для 4 блоків */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-brand-blue/30">
         
         <div className="flex flex-col items-center justify-center p-2 text-center">

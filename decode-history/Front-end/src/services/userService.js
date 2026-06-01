@@ -62,8 +62,6 @@ export const uploadAvatarService = async (fileObject) => {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`
-      // ВАЖЛИВО: НЕ додаємо 'Content-Type': 'application/json' сюди!
-      // Браузер сам встановить потрібний Content-Type для FormData.
     },
     body: formData
   });

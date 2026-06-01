@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 // Додаємо динамічну адресу
 const API_URL = import.meta.env.PROD 
-  ? 'https://api.history.science.kh.ua/api/auth' // Якщо в server.js префіксу немає, прибери тут /api
+  ? 'https://api.history.science.kh.ua/api/auth' 
   : 'http://localhost:5001/api/auth';
 
 const Register = () => {
@@ -21,7 +21,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
-  // Новий стан для помилок від сервера (наприклад, "email вже існує")
+  // Новий стан для помилок від сервера
   const [serverError, setServerError] = useState('');
 
   const handleChange = (e) => {
@@ -73,7 +73,7 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ОНОВЛЕНА функція відправки
+  // функція відправки
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;

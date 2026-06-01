@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom'; // Обов'язковий імпорт для toBeInTheDocument у Vitest
+import '@testing-library/jest-dom'; 
 import { MemoryRouter } from 'react-router-dom'; 
 import ProfileRecentActivity from './ProfileRecentActivity';
 
@@ -59,7 +59,6 @@ describe('Компонент ProfileRecentActivity', () => {
     // Імітуємо клік користувача
     fireEvent.click(openModalButton);
 
-    // Тепер, у модальному вікні, мають бути ВСІ 4 міфи
     expect(screen.getByText('Четвертий Універсал')).toBeInTheDocument();
     
     // Перевіряємо, що модалка має backdrop (елемент з затемненням)

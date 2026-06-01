@@ -1,4 +1,3 @@
-// src/components/Catalog/CatalogFilters.jsx
 import React from 'react';
 
 const CatalogFilters = ({ 
@@ -6,7 +5,6 @@ const CatalogFilters = ({
   selectedCategory, setSelectedCategory, 
   sortBy, setSortBy, categories
 }) => {
-  // Категорії базуються на твоєму файлі myths.js
   
   return (
     <div className="w-full flex flex-col gap-5 bg-white p-5 md:p-6 rounded-3xl border border-brand-blue/20 shadow-sm">

@@ -10,12 +10,12 @@ const AboutMission = () => {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 py-8">
       
-      {/* Заголовок секції (Масштаб підігнаний під "Що таке DeCode") */}
+      {/* Заголовок секції */}
       <h2 className="text-2xl md:text-3xl font-semibold text-brand-dark mb-4">
         Наша місія
       </h2>
 
-      {/* Головний контейнер (Тонша рамка, менші відступи, менше закруглення) */}
+      {/* Головний контейнер */}
       <div className="w-full border border-brand-blue/60 rounded-2xl p-6 md:p-8 bg-white flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 shadow-sm">
         
         {/* ЛІВА ЧАСТИНА: Ілюстрація + Текст */}
@@ -54,7 +54,7 @@ const AboutMission = () => {
             </svg>
           </div>
 
-          {/* Текст місії (Розмір підігнаний під абзаци з першого блоку) */}
+          {/* Текст місії */}
           <p className="text-base md:text-lg text-brand-dark font-medium leading-relaxed pt-1">
             Ми створюємо корисні матеріали, <br className="hidden lg:block" />
             щоб кожен міг мислити критично <br className="hidden lg:block" />

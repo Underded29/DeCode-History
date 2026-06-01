@@ -3,13 +3,13 @@ import React, { useState, useMemo } from 'react';
 import CatalogSidebar from './components/CatalogSidebar';
 import CatalogFilters from './components/CatalogFilters';
 import CatalogMythList from './components/CatalogMythList';
-import { useMythsData } from '../MythContext/MythContext'; // <-- Імпортуємо наш контекст
+import { useMythsData } from '../MythContext/MythContext'; 
 
 const Catalog = () => {
   // Дістаємо готові міфи, категорії та стан завантаження з глобального контексту
   const { myths, categories, loading } = useMythsData();
 
-  // Стани для фільтрів (залишаються локальними для цієї сторінки)
+  // Стани для фільтрів 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Всі');
   const [sortBy, setSortBy] = useState('newest'); 

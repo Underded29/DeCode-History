@@ -4,7 +4,6 @@ const cors = require('cors');
 const db = require('./src/db'); 
 const path = require('path');
 
-// Імпортуємо наш новий роутер авторизації
 const authRoutes = require('./src/routes/auth'); 
 
 const app = express();
@@ -47,7 +46,6 @@ app.get('/api/test-db', async (req, res) => {
 });
 
 // ПІДКЛЮЧАЄМО РОУТИ АВТОРИЗАЦІЇ
-// Всі запити, які починаються з /api/auth, будуть йти у файл auth.js
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); // Підключаємо роутер користувачів
 

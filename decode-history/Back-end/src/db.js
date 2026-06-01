@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-// Створюємо пул підключень (mysql2 сам розуміє формат DATABASE_URL)
+// Створюємо пул підключень 
 const pool = mysql.createPool(process.env.DATABASE_URL);
 
 // Перевірка підключення при запуску
@@ -18,12 +18,10 @@ module.exports = {
   query: async (text, params) => {
     const [result] = await pool.query(text, params);
     
-    // Якщо це SELECT (повертає масив) — віддаємо у звичному для коду форматі rows
     if (Array.isArray(result)) {
       return { rows: result };
     }
-    
-    // Якщо це INSERT/UPDATE/DELETE (повертає об'єкт) — додаємо insertId
+  
     return { rows: [], insertId: result.insertId, affectedRows: result.affectedRows };
   },
 };

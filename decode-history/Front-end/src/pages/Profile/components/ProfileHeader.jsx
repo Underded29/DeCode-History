@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 
-// Додаємо пропс onAvatarChange - функцію, яку викличемо, коли файл буде обрано
 const ProfileHeader = ({ user, onAvatarChange }) => {
   // Створюємо референс для прихованого інпуту
   const fileInputRef = useRef(null);
@@ -21,7 +20,6 @@ const ProfileHeader = ({ user, onAvatarChange }) => {
     
     if (file) {
       // 1. Створюємо тимчасовий URL для прев'ю (Data URL)
-      // Це дозволяє миттєво показати картинку користувачеві без очікування відповіді бекенду
       const reader = new FileReader();
       reader.onloadend = () => {
         setTempAvatarPreview(reader.result); // Записуємо Data URL в локальний стейт прев'ю
@@ -29,7 +27,6 @@ const ProfileHeader = ({ user, onAvatarChange }) => {
       reader.readAsDataURL(file);
 
       // 2. Передаємо сам об'єкт файлу батьківському компоненту (Profile.jsx)
-      // Батько вже буде відповідати за FormData та відправку на сервер
       if (onAvatarChange) {
         onAvatarChange(file);
       }
@@ -59,7 +56,7 @@ const ProfileHeader = ({ user, onAvatarChange }) => {
                // 1. Показуємо тимчасове прев'ю, якщо воно є
                <img src={tempAvatarPreview} alt="Прев'ю аватара" className="w-full h-full object-cover" />
              ) : user.avatarUrl ? (
-               // 2. Інакше показуємо аватар з бази, якщо він є (ТУТ БУЛИ ЗМІНИ)
+               // 2. Інакше показуємо аватар з бази, якщо він є
                <img 
                  src={user.avatarUrl.startsWith('http') ? user.avatarUrl : `https://api.history.science.kh.ua${user.avatarUrl}`} 
                  alt={user.name} 
@@ -74,7 +71,7 @@ const ProfileHeader = ({ user, onAvatarChange }) => {
           
           {/* КНОПКА РЕДАГУВАННЯ */}
           <button 
-            onClick={handleEditClick} // Прив'язуємо тригер
+            onClick={handleEditClick} 
             className="absolute bottom-0 right-0 w-8 h-8 bg-white border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-blue hover:text-white transition-colors shadow-sm cursor-pointer z-20"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>

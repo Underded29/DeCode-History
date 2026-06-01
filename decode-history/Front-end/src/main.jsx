@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom'; // Додаємо імпорт
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './styles/index.css';
-import { MythProvider } from './pages/MythContext/MythContext'; // Імпортуємо провайдер контексту міфів
+import { MythProvider } from './pages/MythContext/MythContext'; 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

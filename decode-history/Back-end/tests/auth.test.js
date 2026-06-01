@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server'); // або '../index', як у тебе
+const app = require('../server'); 
 const db = require('../src/db');
 const bcrypt = require('bcrypt');
 
@@ -13,7 +13,6 @@ describe('Авторизація API (POST /api/auth/login)', () => {
   });
 
   it('Повинен повертати 200 та JWT-токен при правильних даних', async () => {
-    // ВИПРАВЛЕНО: тепер повертаємо об'єкт з властивістю rows
     db.query.mockResolvedValue({
       rows: [{ 
         id: 1, 
@@ -38,7 +37,6 @@ describe('Авторизація API (POST /api/auth/login)', () => {
   });
 
   it('Повинен повертати 401 при невірному паролі', async () => {
-    // ВИПРАВЛЕНО: тепер повертаємо об'єкт з властивістю rows
     db.query.mockResolvedValue({
       rows: [{ 
         id: 1, 
@@ -54,7 +52,6 @@ describe('Авторизація API (POST /api/auth/login)', () => {
       .send({ email: 'test@history.ua', password: 'wrongpassword' });
 
     expect(response.status).toBe(401);
-    // Зверни увагу: у тебе в коді res.json({ error: '...' }), тому перевіряємо error, а не message
     expect(response.body.error).toBe('Невірний email або пароль'); 
   });
 });

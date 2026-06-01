@@ -34,9 +34,7 @@ function App() {
       {/* Бокове меню (мобільне) */}
       <Sidebar isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
-      {/* main займає весь вільний простір (flex-1).
-        pt-24 компенсує висоту хедера, щоб сторінки не "заїжджали" під нього.
-      */}
+  
       <main className="flex-1 w-full flex flex-col pt-24">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -51,7 +49,6 @@ function App() {
         </Routes>
       </main>
       
-      {/* Футер завжди притиснутий донизу */}
       <Footer />
       
     </div>

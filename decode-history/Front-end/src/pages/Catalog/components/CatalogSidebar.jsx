@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // ДОДАНО ЦЕЙ ІМПОРТ
+import { Link } from 'react-router-dom';
 import loupeImage from '../../../assets/notebookAndLoupe.png'; 
 
 const CatalogSidebar = () => {

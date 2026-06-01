@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Додано імпорт Link
+import { Link } from 'react-router-dom'; 
 
 const ProfileRecentActivity = ({ activities = [] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +19,6 @@ const ProfileRecentActivity = ({ activities = [] }) => {
   const previewActivities = activities.slice(0, 3);
 
   const renderActivityItem = (activity, index) => (
-    // Замінено div на Link, додано правильний шлях за mythId та стилі для клікабельності (group, hover:shadow)
     <Link 
       to={`/myth/${activity.mythId}`} 
       key={index} 
@@ -31,7 +30,6 @@ const ProfileRecentActivity = ({ activities = [] }) => {
           </svg>
       </div>
       <div className="flex-1 flex flex-col justify-center">
-        {/* Додано зміну кольору тексту на синій при наведенні (group-hover:text-brand-blue) */}
         <p className="text-xs font-bold text-brand-dark line-clamp-2 leading-tight mb-1 group-hover:text-brand-blue transition-colors">
           {activity.title}
         </p>
@@ -42,7 +40,6 @@ const ProfileRecentActivity = ({ activities = [] }) => {
           {activity.date && <span className="text-[10px] font-bold text-brand-dark/40 uppercase shrink-0">{formatDate(activity.date)}</span>}
         </div>
       </div>
-      {/* Додано іконку стрілочки для індикації переходу */}
       <svg className="w-4 h-4 shrink-0 text-brand-dark/20 group-hover:text-brand-blue mr-1 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
       </svg>

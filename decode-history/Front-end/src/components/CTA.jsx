@@ -65,7 +65,7 @@ const CTA = () => {
         {/* === ПРАВА ЧАСТИНА: Кнопка-посилання === */}
         {/* Використовуємо Link з React Router для миттєвого переходу */}
         <Link 
-          to="/catalog" // Зміни цей шлях на той, де буде твій каталог міфів
+          to="/catalog" 
           className="shrink-0 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-4 px-8 md:px-10 rounded-xl md:rounded-2xl shadow-lg shadow-brand-blue/20 transition-all flex items-center gap-3 group"
         >
           <span className="text-lg tracking-wide">Почати спростування</span>

@@ -60,7 +60,6 @@ const Profile = () => {
     }
   };
 
-  // ТЕПЕР ЧЕКАЄМО ТІЛЬКИ ШВИДКУ БАЗУ ДАНИХ (прибрали isMythsLoading)
   if (isLoading) {
     return (
       <div className="w-full min-h-[60vh] flex flex-col items-center justify-center">

@@ -60,7 +60,7 @@ const HomeFeatures = () => {
               key={feature.id} 
               className="flex flex-col items-center text-center px-4 lg:px-6 pt-6 md:pt-0"
             >
-              {/* Іконка (використовуємо твій синій колір) */}
+              {/* Іконка */}
               <div className="text-brand-blue mb-4">
                 {feature.icon}
               </div>

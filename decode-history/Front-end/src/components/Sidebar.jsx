@@ -84,7 +84,6 @@ const Sidebar = ({ isOpen, onClose }) => {
           >
             <div className="flex items-center gap-4">
               <div className="relative shrink-0 w-12 h-12 rounded-full border-2 border-brand-blue/40 group-hover:border-brand-blue transition-colors overflow-hidden bg-white flex items-center justify-center">
-                {/* ОНОВЛЕНА ЛОГІКА ДЛЯ АВАТАРА */}
                 {user.avatarUrl ? (
                   <img 
                     src={user.avatarUrl.startsWith('http') ? user.avatarUrl : `https://api.history.science.kh.ua${user.avatarUrl}`} 

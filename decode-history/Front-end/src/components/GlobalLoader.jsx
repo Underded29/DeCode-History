@@ -17,7 +17,7 @@ const GlobalLoader = () => {
       
       // 3. Чекаємо 300мс (поки пройде CSS-транзиція opacity), і повністю видаляємо div з DOM
       setTimeout(() => setShowOverlay(false), 300);
-    }, 300); // <-- ТУТ МОЖНА РЕГУЛЮВАТИ ЧАС ЗАТРИМКИ
+    }, 300); // Регуляція часу затримки
 
     // Очищаємо таймер, якщо користувач дуже швидко клацає туди-сюди
     return () => clearTimeout(timer);
@@ -31,7 +31,7 @@ const GlobalLoader = () => {
         isLoading ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      {/* Анімований спінер (використовуємо твої фірмові кольори) */}
+      {/* Анімований спінер */}
       <div className="relative flex items-center justify-center">
         {/* Зовнішнє кільце */}
         <div className="w-16 h-16 border-4 border-brand-blue/10 rounded-full"></div>

@@ -40,7 +40,6 @@ export const MythProvider = ({ children }) => {
         const formattedMyths = mythData.map(item => {
           const acf = item.acf || {};
           
-          // ВСТАНОВЛЮЄМО ПЛЕЙСХОЛДЕР ЗА ЗАМОВЧУВАННЯМ
           let imageUrl = "https://placehold.co/600x400/e2e8f0/475569?text=DeCode";
           
           // Якщо в WP є картинка, замінюємо плейсхолдер на неї
@@ -77,7 +76,7 @@ export const MythProvider = ({ children }) => {
             difficulty: parseInt(acf.xp_reward) > 200 ? "Важко" : "Середня",
             status: acf.status || 'Міф',
             
-            // МАГІЯ ТУТ: Передаємо весь оригінальний об'єкт ACF далі в карточку!
+            // Передаємо весь оригінальний об'єкт ACF далі в карточку
             acf: acf 
           };
         });

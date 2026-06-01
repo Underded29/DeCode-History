@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMythsData } from '../../MythContext/MythContext'; 
-import { completeMythService } from '../../../services/userService'; // Імпортуємо наш новий сервіс
+import { completeMythService } from '../../../services/userService'; 
 
 const MythQuiz = ({ quizzes, currentId, mythXp, onQuizComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   
-  // Нові стейти для ігрової механіки
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
   const [serverMessage, setServerMessage] = useState(null); // Повідомлення від бекенду
   
@@ -29,7 +28,6 @@ const MythQuiz = ({ quizzes, currentId, mythXp, onQuizComplete }) => {
   const { question, options, correctAnswer, explanation } = currentQuiz;
   const isLastQuestion = currentQuestionIndex === quizzes.length - 1;
 
-  // ОНОВЛЕНА функція вибору відповіді
   const handleAnswerSelect = async (optionId) => {
     if (selectedAnswer) return; // Захист від подвійного кліку
     
